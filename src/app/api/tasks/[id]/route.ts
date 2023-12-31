@@ -4,7 +4,7 @@ import { prisma } from "@/app/libs/prisma";
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     const task = await prisma.task.findFirst({
         where: {
-            id: Number(params.id)
+            id: Number(params.id),
         },
     });
     return NextResponse.json(task);
@@ -24,7 +24,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     const task = await prisma.task.delete({
         where: {
-            id: Number(params.id)
+            id: Number(params.id),
         },
     });
     return NextResponse.json(task);
