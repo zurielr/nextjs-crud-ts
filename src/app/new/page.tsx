@@ -28,8 +28,11 @@ function NewPage({ params }: { params: { id: string }}) {
     });
 
     return (
-        <section className="h-screen flex items-center justify-center">
-            <form onSubmit={onSubmit}>
+        <section className="h-[calc(100vh-7rem)] flex items-center justify-center">
+            <form onSubmit={onSubmit} className="w-1/4">
+                <h1 className="text-3xl font-bold">
+                    {params.id ? "Update" : "Create"} Task
+                </h1>
                 <label 
                 htmlFor="title"
                 className="font-bold text-xs"
@@ -42,7 +45,7 @@ function NewPage({ params }: { params: { id: string }}) {
                     className="px-3 py-1 border 
                         border-gray-300 rounded-md shadow-sm 
                         focus:outline-none focus:ring-1 focus:ring-sky-300 
-                        focus:border-sky-300 text-black block mb-2" 
+                        focus:border-sky-300 text-black block mb-2 w-full" 
                         {...register("title")}
                     />
                 <label 
@@ -59,11 +62,27 @@ function NewPage({ params }: { params: { id: string }}) {
                         focus:border-sky-300 text-black block w-full"
                         {...register("description")}
                     ></textarea>
-                <button
-                    className="bg-sky-500 px-3 py-1 rounded-md text-white mt-2"
-                >
-                    {params.id ? "Update" : "Create"}
-                </button>
+                <div className="flex justify-between">
+                    <button
+                        type="submit"
+                        className="bg-sky-500 px-3 py-1 rounded-md text-white mt-2"
+                    >
+                        {params.id ? "Update" : "Create"}
+                    </button>
+                    <button 
+                        type="button"
+                        className="bg-red-500 px-3 py-1 rounded-md text-white mt-2"
+                        onClick={async() => {
+                            if (confirm("Are you sure you want to delete this task?")) {
+                                await axios.delete(`/api/tasks/${params.id}`);
+                                router.push("/");
+                                router.refresh();
+                            }
+                        }}
+                    >
+                        Delete
+                    </button>
+                </div>
             </form>
         </section>
     );
